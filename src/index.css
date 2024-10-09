@@ -1,5 +1,5 @@
-/* Estilos para las teclas blancas */
-.tecla.blanca {
+
+.key.white {
   width: 60px;
   height: 200px;
   background-color: white;
@@ -9,8 +9,8 @@
   cursor: pointer;
 }
 
-/* Estilos para las teclas negras */
-.tecla.negra {
+
+.key.black {
   width: 40px;
   height: 120px;
   background-color: black;
@@ -22,24 +22,24 @@
   cursor: pointer;
 }
 
-/* Resaltamos la tecla cuando es presionada */
-.tecla.activa {
+
+.key.active {
   background-color: yellow;
 }
 
-/* El contenedor del teclado */
-.teclado {
+
+.keyboard {
   display: flex;
   flex-direction: row;
   position: relative;
 }
 
-/* Separar contenedores de teclas blancas y negras */
-.teclas-blancas {
+
+.white-keys {
   display: flex;
 }
 
-.teclas-negras {
+.black-keys {
   display: flex;
   position: absolute;
   margin-left: 30px;

@@ -1,35 +1,35 @@
 import React, { useState } from 'react';
-import Teclado from './components/Teclado';
-import Grabadora from './components/Grabadora';
+import Keyboard from './components/Keyboard';
+import Recorder from './components/Recorder';
 import './App.css';
 
-// Solo las notas: do, re, mi, fa, sol, la, si
-const notasDisponibles = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'];
+
+const availableNotes = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'];
 
 const Piano: React.FC = () => {
-  const [teclasActivas, setTeclasActivas] = useState<string[]>([]);
-  const [notasGrabadas, setNotasGrabadas] = useState<string[]>([]);
-  const [tocando, setTocando] = useState(false);
+  const [activeKeys, setActiveKeys] = useState<string[]>([]);
+  const [recordedNotes, setRecordedNotes] = useState<string[]>([]);
+  const [playing, setPlaying] = useState(false);
 
-  const presionarTecla = (nota: string) => {
-    setTeclasActivas([...teclasActivas, nota]);
-    if (!tocando) {
-      setNotasGrabadas([...notasGrabadas, nota]);
+  const pressKey = (note: string) => {
+    setActiveKeys([...activeKeys, note]);
+    if (!playing) {
+      setRecordedNotes([...recordedNotes, note]);
     }
   };
 
   return (
     <div className="piano">
-      <Teclado 
-        notas={notasDisponibles} 
-        presionarTecla={presionarTecla}
-        teclasActivas={teclasActivas}
+      <Keyboard 
+        notes={availableNotes} 
+        pressKey={pressKey}
+        activeKeys={activeKeys}
       />
-      <Grabadora 
-        notasGrabadas={notasGrabadas}
-        setNotasGrabadas={setNotasGrabadas}
-        tocando={tocando}
-        setTocando={setTocando}
+      <Recorder 
+        recordedNotes={recordedNotes}
+        setRecordedNotes={setRecordedNotes}
+        playing={playing}
+        setPlaying={setPlaying}
       />
     </div>
   );
