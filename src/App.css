@@ -1,0 +1,17 @@
+.tecla {
+  width: 60px;
+  height: 200px;
+  background-color: white;
+  border: 1px solid black;
+  display: inline-block;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.tecla.activa {
+  background-color: yellow;
+}
+
+.teclado {
+  display: flex;
+}
