@@ -4,7 +4,7 @@ import Recorder from './components/Recorder';
 import './App.css';
 
 
-const availableNotes = ['do', 're', 'mi', 'fa', 'sol', 'la', 'si'];
+const availableNotes = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
 
 const Piano: React.FC = () => {
   const [activeKeys, setActiveKeys] = useState<string[]>([]);

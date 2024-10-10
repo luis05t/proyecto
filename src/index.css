@@ -1,14 +1,29 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('https://i.pinimg.com/originals/9a/59/f6/9a59f607a03342a436dccfa048d9a8e5.gif');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.keyboard-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
 
 .key.white {
   width: 60px;
   height: 200px;
   background-color: white;
   border: 1px solid black;
-  display: inline-block;
   margin: 2px;
   cursor: pointer;
 }
-
 
 .key.black {
   width: 40px;
@@ -17,23 +32,18 @@
   border: 1px solid black;
   position: relative;
   z-index: 1;
-  margin-left: -20px;
-  margin-right: -20px;
+  margin: 0 -20px;
   cursor: pointer;
 }
 
-
 .key.active {
-  background-color: yellow;
+  background-color: rgb(170, 170, 158);
 }
-
 
 .keyboard {
   display: flex;
-  flex-direction: row;
   position: relative;
 }
-
 
 .white-keys {
   display: flex;
