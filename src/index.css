@@ -19,30 +19,44 @@ body {
 .key.white {
   width: 60px;
   height: 200px;
-  background-color: white;
-  border: 1px solid black;
-  margin: 2px;
+  background: linear-gradient(to bottom, #3c2828 0%, #29d6ab 100%);
+  background-color: rgb(29, 142, 130);
+  border: 5px solid black;
+  margin: 10px;
   cursor: pointer;
 }
 
 .key.black {
   width: 40px;
   height: 120px;
+  background: linear-gradient(to bottom, #261a80 0%, #1952ad8f 100%);
   background-color: black;
   border: 1px solid black;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   margin: 0 -20px;
   cursor: pointer;
 }
 
 .key.active {
-  background-color: rgb(170, 170, 158);
+  transform: translateY(2px);
+  background-color: rgb(136, 140, 138);
+}
+
+.key.white.active {
+  background: linear-gradient(to bottom, #510b62 0%, #0f7391 100%);
+}
+
+.key.black.active {
+  background: linear-gradient(to bottom, #73772e 0%, #3b876e 100%);
 }
 
 .keyboard {
   display: flex;
   position: relative;
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 5px;
 }
 
 .white-keys {
@@ -53,4 +67,30 @@ body {
   display: flex;
   position: absolute;
   margin-left: 30px;
+}
+
+.note-name {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.keyboard-key {
+  font-size: 10px;
+  opacity: 0.4;
+  margin-top: 5px;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+}
+
+.key:hover {
+  animation: glow 1.5s infinite;
+}
+
+.note-name {
+  font-size: 12px;
+  font-weight: bold;
 }
