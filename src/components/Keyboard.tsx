@@ -9,7 +9,8 @@ interface KeyboardProps {
 
 const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, activeKeys }) => {
   return (
-    <div className="keyboard"> {/* Container for the keyboard */}
+    <div className="keyboard">
+      {}
       {notes.map((note) => (
         <Key
           key={note} 
@@ -22,4 +23,4 @@ const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, activeKeys }) => {
   );
 };
 
-export default Keyboard; 
+export default Keyboard;

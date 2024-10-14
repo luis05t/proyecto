@@ -2,9 +2,9 @@ import React, { useEffect, useCallback, useMemo } from 'react';
 import * as Tone from 'tone';
 
 interface KeyProps {
-  note: string;
-  pressKey: (note: string) => void;
-  isActive: boolean;
+  note: string; 
+  pressKey: (note: string) => void; 
+  isActive: boolean; 
   keyboardKey?: string;
 }
 
@@ -16,22 +16,21 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, isActive, keyboardKey }) => {
   }, [synth]);
 
   const handleClick = useCallback(() => {
-    pressKey(note);
-    playSound(note);
+    pressKey(note); 
+    playSound(note); 
   }, [note, pressKey, playSound]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat) return; // Evita repetición al mantener pulsada la tecla
+      if (event.repeat) return; 
       if (event.key === keyboardKey) {
-        pressKey(note);
-        playSound(note);
+        pressKey(note); 
+        playSound(note); 
       }
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
       if (event.key === keyboardKey) {
-        // Aquí puedes añadir lógica para cuando se suelta la tecla
       }
     };
 
@@ -51,10 +50,10 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, isActive, keyboardKey }) => {
       className={`key ${isBlackKey ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
       onClick={handleClick}
     >
-      <span className="note-name">{note}</span>
-      {keyboardKey && <span className="keyboard-key">{keyboardKey}</span>}
+      <span className="note-name">{note}</span> {}
+      {keyboardKey && <span className="keyboard-key">{keyboardKey}</span>} {}
     </div>
   );
 };
 
-export default React.memo(Key);
+export default React.memo(Key); 

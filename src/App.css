@@ -1,17 +1,20 @@
-.tecla {
-  width: 60px;
-  height: 200px;
-  background-color: white;
-  border: 1px solid black;
-  display: inline-block;
-  margin: 2px;
-  cursor: pointer;
-}
-
-.tecla.activa {
-  background-color: yellow;
-}
-
-.teclado {
+.piano {
   display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.keyboard-container, .recorder-container {
+  margin: 20px;
+  text-align: center;
+}
+
+.keyboard {
+  display: flex;
+  justify-content: center;
+}
+
+.recorder button {
+  margin: 10px;
+  padding: 10px 20px;
 }
