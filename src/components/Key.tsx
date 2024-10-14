@@ -2,13 +2,14 @@ import React, { useEffect, useCallback, useMemo } from 'react';
 import * as Tone from 'tone';
 
 interface KeyProps {
-  note: string; 
-  pressKey: (note: string) => void; 
-  isActive: boolean; 
+  note: string;
+  pressKey: (note: string) => void;
+  releaseKey: (note: string) => void; 
+  isActive: boolean;
   keyboardKey?: string;
 }
 
-const Key: React.FC<KeyProps> = ({ note, pressKey, isActive, keyboardKey }) => {
+const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboardKey }) => {
   const synth = useMemo(() => new Tone.Synth().toDestination(), []);
 
   const playSound = useCallback((noteToPlay: string) => {
@@ -16,21 +17,22 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, isActive, keyboardKey }) => {
   }, [synth]);
 
   const handleClick = useCallback(() => {
-    pressKey(note); 
-    playSound(note); 
+    pressKey(note);
+    playSound(note);
   }, [note, pressKey, playSound]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.repeat) return; 
       if (event.key === keyboardKey) {
-        pressKey(note); 
-        playSound(note); 
+        pressKey(note);
+        playSound(note);
       }
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
       if (event.key === keyboardKey) {
+        releaseKey(note); 
       }
     };
 
@@ -41,7 +43,7 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, isActive, keyboardKey }) => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [keyboardKey, note, pressKey, playSound]);
+  }, [keyboardKey, note, pressKey, playSound, releaseKey]);
 
   const isBlackKey = note.includes('#');
 
@@ -50,10 +52,10 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, isActive, keyboardKey }) => {
       className={`key ${isBlackKey ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
       onClick={handleClick}
     >
-      <span className="note-name">{note}</span> {}
-      {keyboardKey && <span className="keyboard-key">{keyboardKey}</span>} {}
+      <span className="note-name">{note}</span>
+      {keyboardKey && <span className="keyboard-key">{keyboardKey}</span>}
     </div>
   );
 };
 
-export default React.memo(Key); 
+export default React.memo(Key);

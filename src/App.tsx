@@ -11,34 +11,36 @@ const Piano: React.FC = () => {
   const [playing, setPlaying] = useState(false);
 
   const pressKey = (note: string) => {
-    setActiveKeys([...activeKeys, note]);
+    setActiveKeys((prevKeys) => {
+      if (!prevKeys.includes(note)) {
+        return [...prevKeys, note];
+      }
+      return prevKeys; 
+    });
+
     if (!playing) {
-      setRecordedNotes([...recordedNotes, note]);
+      setRecordedNotes((prevNotes) => [...prevNotes, note]);
     }
+  };
+
+  const releaseKey = (note: string) => {
+    setActiveKeys((prevKeys) => prevKeys.filter((key) => key !== note));
   };
 
   return (
     <div className="piano">
-      {}
-      <div className="keyboard-container">
-        <h2></h2>
-        <Keyboard 
-          notes={availableNotes} 
-          pressKey={pressKey}
-          activeKeys={activeKeys}
-        />
-      </div>
-
-      {}
-      <div className="recorder-container">
-        <h3>Recorder</h3>
-        <Recorder 
-          recordedNotes={recordedNotes}
-          setRecordedNotes={setRecordedNotes}
-          playing={playing}
-          setPlaying={setPlaying}
-        />
-      </div>
+      <Keyboard 
+        notes={availableNotes} 
+        pressKey={pressKey}
+        releaseKey={releaseKey} 
+        activeKeys={activeKeys}
+      />
+      <Recorder 
+        recordedNotes={recordedNotes}
+        setRecordedNotes={setRecordedNotes}
+        playing={playing}
+        setPlaying={setPlaying}
+      />
     </div>
   );
 };
