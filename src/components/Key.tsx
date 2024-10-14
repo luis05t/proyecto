@@ -1,58 +1,60 @@
-import React, { useEffect } from 'react';
-import * as Tone from 'tone'; // Importa Tone.js
+import React, { useEffect, useCallback, useMemo } from 'react';
+import * as Tone from 'tone';
 
 interface KeyProps {
-  note: string; 
-  pressKey: (note: string) => void; 
+  note: string;
+  pressKey: (note: string) => void;
   isActive: boolean;
+  keyboardKey?: string;
 }
 
-const Key: React.FC<KeyProps> = ({ note, pressKey, isActive }) => {
-  const synth = new Tone.Synth().toDestination();
+const Key: React.FC<KeyProps> = ({ note, pressKey, isActive, keyboardKey }) => {
+  const synth = useMemo(() => new Tone.Synth().toDestination(), []);
 
-  const playSound = (note: string) => {
-    synth.triggerAttackRelease(note, '8n'); // 
-  };
+  const playSound = useCallback((noteToPlay: string) => {
+    synth.triggerAttackRelease(noteToPlay, '8n');
+  }, [synth]);
 
-  const handleClick = () => {
-    pressKey(note); 
-    playSound(note); 
-  };
+  const handleClick = useCallback(() => {
+    pressKey(note);
+    playSound(note);
+  }, [note, pressKey, playSound]);
 
-  
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const keyToNoteMap: { [key: string]: string } = {
-        'a': 'C4',
-        's': 'D4',
-        'd': 'E4',
-        'f': 'F4',
-        'g': 'G4',
-        'h': 'A4',
-        'j': 'B4'
-      };
-
-      const note = keyToNoteMap[event.key];
-      if (note) {
+      if (event.repeat) return; // Evita repetición al mantener pulsada la tecla
+      if (event.key === keyboardKey) {
         pressKey(note);
         playSound(note);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown); 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown); 
+    const handleKeyUp = (event: KeyboardEvent) => {
+      if (event.key === keyboardKey) {
+        // Aquí puedes añadir lógica para cuando se suelta la tecla
+      }
     };
-  }, [pressKey]); 
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [keyboardKey, note, pressKey, playSound]);
+
+  const isBlackKey = note.includes('#');
 
   return (
     <div
-      className={`key white ${isActive ? 'active' : ''}`} 
-      onClick={handleClick} 
+      className={`key ${isBlackKey ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
+      onClick={handleClick}
     >
-      {note} 
+      <span className="note-name">{note}</span>
+      {keyboardKey && <span className="keyboard-key">{keyboardKey}</span>}
     </div>
   );
 };
 
-export default Key;
+export default React.memo(Key);
