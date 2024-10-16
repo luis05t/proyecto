@@ -22,17 +22,29 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboar
   }, [note, pressKey, playSound]);
 
   useEffect(() => {
+    const keyToNoteMap: { [key: string]: string } = {
+      'a': 'C4',
+      's': 'D4',
+      'd': 'E4',
+      'f': 'F4',
+      'g': 'G4',
+      'h': 'A4',
+      'j': 'B4'
+    };
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.repeat) return; 
-      if (event.key === keyboardKey) {
-        pressKey(note);
-        playSound(note);
+      const noteToPlay = keyToNoteMap[event.key];
+      if (noteToPlay) {
+        pressKey(noteToPlay);
+        playSound(noteToPlay);
       }
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
-      if (event.key === keyboardKey) {
-        releaseKey(note); 
+      const noteToRelease = keyToNoteMap[event.key];
+      if (noteToRelease) {
+        releaseKey(noteToRelease); 
       }
     };
 
@@ -43,13 +55,11 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboar
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [keyboardKey, note, pressKey, playSound, releaseKey]);
-
-  const isBlackKey = note.includes('#');
+  }, [pressKey, playSound, releaseKey]);
 
   return (
     <div
-      className={`key ${isBlackKey ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
+      className={`key ${note.includes('#') ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
       onClick={handleClick}
     >
       <span className="note-name">{note}</span>
