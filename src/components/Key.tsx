@@ -1,21 +1,15 @@
-import React, { useEffect, useCallback, useMemo } from 'react';
-import * as Tone from 'tone';
+import React, { useEffect, useCallback } from 'react';
 
 interface KeyProps {
   note: string;
   pressKey: (note: string) => void;
-  releaseKey: (note: string) => void; 
+  releaseKey: (note: string) => void;
   isActive: boolean;
   keyboardKey?: string;
+  playSound: (note: string) => void;
 }
 
-const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboardKey }) => {
-  const synth = useMemo(() => new Tone.Synth().toDestination(), []);
-
-  const playSound = useCallback((noteToPlay: string) => {
-    synth.triggerAttackRelease(noteToPlay, '8n');
-  }, [synth]);
-
+const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboardKey, playSound }) => {
   const handleClick = useCallback(() => {
     pressKey(note);
     playSound(note);
@@ -23,17 +17,17 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboar
 
   useEffect(() => {
     const keyToNoteMap: { [key: string]: string } = {
-      'a': 'C4',
-      's': 'D4',
-      'd': 'E4',
-      'f': 'F4',
-      'g': 'G4',
-      'h': 'A4',
+      'a': 'C4', 
+      's': 'D4', 
+      'd': 'E4', 
+      'f': 'F4', 
+      'g': 'G4', 
+      'h': 'A4', 
       'j': 'B4'
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat) return; 
+      if (event.repeat) return;
       const noteToPlay = keyToNoteMap[event.key];
       if (noteToPlay) {
         pressKey(noteToPlay);
@@ -44,7 +38,7 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboar
     const handleKeyUp = (event: KeyboardEvent) => {
       const noteToRelease = keyToNoteMap[event.key];
       if (noteToRelease) {
-        releaseKey(noteToRelease); 
+        releaseKey(noteToRelease);
       }
     };
 

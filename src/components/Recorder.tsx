@@ -1,19 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface RecorderProps {
-  recordedNotes: string[]; 
-  setRecordedNotes: (notes: string[]) => void; 
-  playing: boolean; 
-  setPlaying: (state: boolean) => void; 
+  recordedNotes: string[];
+  setRecordedNotes: (notes: string[]) => void;
+  playing: boolean;
+  setPlaying: (state: boolean) => void;
+  recording: boolean;
+  setRecording: (state: boolean) => void;
 }
 
-const Recorder: React.FC<RecorderProps> = ({ recordedNotes, setRecordedNotes, playing, setPlaying }) => {
-  const [recording, setRecording] = useState(false); 
-  const sequenceRef = useRef<number | null>(null); 
+const Recorder: React.FC<RecorderProps> = ({ 
+  recordedNotes, 
+  setRecordedNotes, 
+  playing, 
+  setPlaying,
+  recording,
+  setRecording
+}) => {
+  const sequenceRef = useRef<number | null>(null);
 
   const startRecording = () => {
-    setRecordedNotes([]); 
-    setRecording(true); 
+    setRecordedNotes([]);
+    setRecording(true);
   };
 
   const stopRecording = () => {
@@ -21,32 +29,29 @@ const Recorder: React.FC<RecorderProps> = ({ recordedNotes, setRecordedNotes, pl
   };
 
   const playRecording = () => {
-    setPlaying(true); 
-    sequenceRef.current = 0; 
+    setPlaying(true);
+    sequenceRef.current = 0;
   };
 
   useEffect(() => {
     if (playing && sequenceRef.current !== null && sequenceRef.current < recordedNotes.length) {
       setTimeout(() => {
-        sequenceRef.current!++; 
-      }, 500); 
+        sequenceRef.current!++;
+      }, 500);
     } else if (sequenceRef.current === recordedNotes.length) {
       setPlaying(false);
-      sequenceRef.current = null; 
+      sequenceRef.current = null;
     }
-  }, [playing, recordedNotes]); 
+  }, [playing, recordedNotes, setPlaying]);
 
   return (
     <div className="recorder">
-      {}
       <button onClick={startRecording} disabled={recording}>
         Record
       </button>
-      {}
       <button onClick={stopRecording} disabled={!recording}>
         Stop
       </button>
-      {}
       <button onClick={playRecording} disabled={recordedNotes.length === 0 || playing}>
         Play
       </button>
