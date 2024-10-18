@@ -1,26 +1,26 @@
 import React from 'react';
-import Key from './Key';
 
 interface KeyboardProps {
-  notes: string[]; 
-  pressKey: (note: string) => void; 
-  releaseKey: (note: string) => void; 
+  notes: { note: string; type: string }[];
+  pressKey: (note: string) => void;
+  releaseKey: (note: string) => void;
   activeKeys: string[];
-  playSound:(note: string) =>void;
+  playSound: (note: string) => void;
 }
 
 const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, releaseKey, activeKeys, playSound }) => {
   return (
-    <div className="keyboard"> {}
-      {notes.map((note) => (
-        <Key
-          key={note} 
-          note={note} 
-          pressKey={pressKey} 
-          releaseKey={releaseKey}
-          isActive={activeKeys.includes(note)} 
-          playSound={playSound}
-        />
+    <div className="keyboard">
+      {notes.map(({ note, type }) => (
+        <div
+          key={note}
+          className={`key ${type} ${activeKeys.includes(note) ? 'active' : ''}`}
+          onMouseDown={() => pressKey(note)}
+          onMouseUp={() => releaseKey(note)}
+          onMouseLeave={() => releaseKey(note)}
+        >
+          <span className="note-name">{note}</span>
+        </div>
       ))}
     </div>
   );
