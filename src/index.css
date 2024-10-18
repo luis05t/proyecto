@@ -20,8 +20,6 @@ body {
 .keyboard {
   display: flex;
   justify-content: center;
-  position: relative;
-  height: 200px;
   margin-bottom: 20px;
 }
 
@@ -37,98 +35,73 @@ body {
 }
 
 .key.white {
-  width: 50px;
+  width: 60px;
   height: 200px;
-  background: linear-gradient(to bottom, #f8f8f8 0%, #e6e6e6 100%);
-  border: 1px solid #ccc;
-  z-index: 1;
-  margin: 0 1px;
-  box-shadow: 
-    0 2px 5px rgba(0, 0, 0, 0.2),
-    0 5px 15px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to bottom, #3c2828 0%, #29d6ab 100%);
+  background-color: rgb(29, 142, 130);
+  border: 5px solid black;
+  margin: 10px;
+  cursor: pointer;
 }
 
 .key.black {
-  width: 30px;
+  width: 40px;
   height: 120px;
-  background: linear-gradient(to bottom, #333 0%, #000 100%);
-  border: 1px solid #000;
+  background: linear-gradient(to bottom, #261a80 0%, #1952ad8f 100%);
+  background-color: black;
+  border: 1px solid black;
+  position: relative;
   z-index: 2;
-  margin: 0 -15px;
-  box-shadow: 
-    -1px -1px 2px rgba(255, 255, 255, 0.2) inset,
-    0 -5px 2px 3px rgba(0, 0, 0, 0.6) inset,
-    0 2px 4px rgba(0, 0, 0, 0.5);
+  margin: 0 -20px;
+  cursor: pointer;
 }
 
 .key.active {
   transform: translateY(2px);
+  background-color: rgb(136, 140, 138);
 }
 
 .key.white.active {
-  background: linear-gradient(to bottom, #e6e6e6 0%, #d9d9d9 100%);
-  box-shadow: 
-    0 1px 1px rgba(0, 0, 0, 0.3),
-    0 2px 5px rgba(0, 0, 0, 0.1) inset;
+  background: linear-gradient(to bottom, #510b62 0%, #0f7391 100%);
 }
 
 .key.black.active {
-  background: linear-gradient(to bottom, #000 0%, #222 100%);
-  box-shadow: 
-    -1px -1px 2px rgba(255, 255, 255, 0.2) inset,
-    0 -2px 2px 3px rgba(0, 0, 0, 0.6) inset,
-    0 1px 2px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(to bottom, #73772e 0%, #3b876e 100%);
+}
+
+.keyboard {
+  display: flex;
+  position: relative;
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 5px;
+}
+
+.white-keys {
+  display: flex;
+}
+
+.black-keys {
+  display: flex;
+  position: absolute;
+  margin-left: 30px;
 }
 
 .note-name {
-  font-size: 12px;
+  font-size: 24px;
   font-weight: bold;
-  color: #333;
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
-.key:hover .note-name {
-  opacity: 1;
+.keyboard-key {
+  font-size: 10px;
+  opacity: 0.4;
+  margin-top: 5px;
 }
 
-.key.black .note-name {
-  color: #fff;
-}
-
-/* Estilos para el grabador */
-.recorder {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.recorder button {
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.recorder button:hover {
-  opacity: 0.9;
-}
-
-.recorder button:active {
-  transform: translateY(1px);
-}
-
-.recorder button.record {
-  background-color: #ff4136;
-  color: white;
-}
-
-.recorder button.play {
-  background-color: #2ecc40;
-  color: white;
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
 }
 
 .recorder button.clear {
@@ -136,7 +109,7 @@ body {
   color: white;
 }
 
-.recorder button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
+.note-name {
+  font-size: 12px;
+  font-weight: bold;
 }
