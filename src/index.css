@@ -13,84 +13,58 @@ body {
 .keyboard-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
-.key.white {
-  width: 60px;
-  height: 200px;
-  background: linear-gradient(to bottom, #3c2828 0%, #29d6ab 100%);
-  background-color: rgb(29, 142, 130);
-  border: 5px solid black;
-  margin: 10px;
+.key {
+  width: 80px;
+  height: 300px;
+  background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+  border: 4px solid #000000;
+  margin: 0 2px;
   cursor: pointer;
-}
-
-.key.black {
-  width: 40px;
-  height: 120px;
-  background: linear-gradient(to bottom, #261a80 0%, #1952ad8f 100%);
-  background-color: black;
-  border: 1px solid black;
   position: relative;
-  z-index: 2;
-  margin: 0 -20px;
-  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.key:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.key:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .key.active {
-  transform: translateY(2px);
-  background-color: rgb(136, 140, 138);
-}
-
-.key.white.active {
-  background: linear-gradient(to bottom, #510b62 0%, #0f7391 100%);
-}
-
-.key.black.active {
-  background: linear-gradient(to bottom, #73772e 0%, #3b876e 100%);
+  background: linear-gradient(to bottom, #29d6ab 0%, #3c2828 100%);
 }
 
 .keyboard {
   display: flex;
   position: relative;
-  font-size: 10px;
-  opacity: 0.7;
-  margin-top: 5px;
-}
-
-.white-keys {
-  display: flex;
-}
-
-.black-keys {
-  display: flex;
-  position: absolute;
-  margin-left: 30px;
+  background-color: #000000;
+  padding: 20px;
+  border-radius: 20px;
 }
 
 .note-name {
-  font-size: 12px;
+  font-size: 24px;
   font-weight: bold;
-}
-
-.keyboard-key {
-  font-size: 10px;
-  opacity: 0.4;
-  margin-top: 5px;
+  color: #000000;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 @keyframes glow {
-  0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
-  50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
-  100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); }
+  0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(255, 255, 255, 0.8); }
+  100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
 }
 
 .key:hover {
   animation: glow 1.5s infinite;
-}
-
-.note-name {
-  font-size: 12px;
-  font-weight: bold;
 }
