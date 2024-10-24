@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import * as Tone from 'tone';
-import Keyboard from '../components/Keyboard';
-import Recorder from '../components/Recorder';
+import Keyboard from './components/Keyboard';
+import Recorder from './components/Recorder';
 import './App.css';
+
 
 const availableNotes = [
   { note: 'C4', type: 'white', key: 'a' },
