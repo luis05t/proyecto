@@ -4,7 +4,6 @@ import Keyboard from './components/Keyboard';
 import Recorder from './components/Recorder';
 import './App.css';
 
-
 const availableNotes = [
   { note: 'C4', type: 'white', key: 'a' },
   { note: 'C#4', type: 'black', key: 'w' },
