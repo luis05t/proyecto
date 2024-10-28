@@ -103,6 +103,8 @@ const Recorder: React.FC<RecorderProps> = ({
         onClick={onClick}
         disabled={disabled}
         className={`${config.className} ${disabled ? 'disabled' : ''}`}
+        aria-label={config.label}
+        aria-pressed={type === BUTTON_STATES.RECORD && recording}
       >
         {config.label}
       </button>
@@ -110,11 +112,11 @@ const Recorder: React.FC<RecorderProps> = ({
   };
 
   return (
-    <div className="recorder">
+    <div className="recorder" role="region" aria-label="Recorder controls">
       {renderButton(BUTTON_STATES.RECORD, startRecording, recording)}
       {renderButton(BUTTON_STATES.STOP, stopRecording, !recording)}
       {renderButton(BUTTON_STATES.PLAY, playRecording, !recordedNotes.length || playing)}
-      <div className="recorder-status">
+      <div className="recorder-status" aria-live="polite">
         {recording && <span>Recording...</span>}
         {playing && <span>Playing...</span>}
       </div>

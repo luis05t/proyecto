@@ -53,11 +53,17 @@ const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboar
 
   return (
     <div
+      role="button"
+      aria-pressed={isActive}
       className={`key ${note.includes('#') ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
       onClick={handleClick}
     >
-      <span className="note-name">{note}</span>
-      {keyboardKey && <span className="keyboard-key">{keyboardKey}</span>}
+      <span className="note-name" aria-label={`Note ${note}`}>{note}</span>
+      {keyboardKey && (
+        <span className="keyboard-key" aria-label={`Keyboard key ${keyboardKey}`}>
+          {keyboardKey}
+        </span>
+      )}
     </div>
   );
 };
