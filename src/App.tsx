@@ -10,6 +10,7 @@ const availableNotes = [
   { note: 'D4', type: 'white', key: 's' },
   { note: 'D#4', type: 'black', key: 'e' },
   { note: 'E4', type: 'white', key: 'd' },
+  { note: 'R#4', type: 'black', key: 'r' },
   { note: 'F4', type: 'white', key: 'f' },
   { note: 'F#4', type: 'black', key: 't' },
   { note: 'G4', type: 'white', key: 'g' },
