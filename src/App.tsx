@@ -6,16 +6,16 @@ import './App.css';
 
 const availableNotes = [
   { note: 'C4', type: 'white', key: 'a' },
-  { note: 'C4', type: 'black', key: 'w' },
+  { note: 'C#4', type: 'black', key: 'w' },
   { note: 'D4', type: 'white', key: 's' },
-  { note: 'D4', type: 'black', key: 'e' },
+  { note: 'D#4', type: 'black', key: 'e' },
   { note: 'E4', type: 'white', key: 'd' },
   { note: 'F4', type: 'white', key: 'f' },
-  { note: 'F4', type: 'black', key: 't' },
+  { note: 'F#4', type: 'black', key: 't' },
   { note: 'G4', type: 'white', key: 'g' },
-  { note: 'G4', type: 'black', key: 'y' },
+  { note: 'G#4', type: 'black', key: 'y' },
   { note: 'A4', type: 'white', key: 'h' },
-  { note: 'A4', type: 'black', key: 'u' },
+  { note: 'A#4', type: 'black', key: 'u' },
   { note: 'B4', type: 'white', key: 'j' },
 ];
 
