@@ -8,7 +8,7 @@ interface KeyboardProps {
   playSound: (note: string) => void;
 }
 
-const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, releaseKey, activeKeys, playSound }) => {
+const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, releaseKey, activeKeys }) => {
   return (
     <div className="keyboard">
       {notes.map(({ note, type }) => (
