@@ -4,7 +4,20 @@ import Keyboard from './components/Keyboard';
 import Recorder from './components/Recorder';
 import './App.css';
 
-const availableNotes = [
+interface Note {
+  note: string;
+  type: 'white' | 'black';
+  key: string;
+}
+
+interface RecordedNote {
+  note: string;
+  timestamp: number;
+  duration?: number;  // Tiempo que la tecla estuvo presionada
+  gap?: number;       // Tiempo hasta la siguiente nota
+}
+
+const availableNotes: Note[] = [
   { note: 'C4', type: 'white', key: 'a' },
   { note: 'C#4', type: 'black', key: 'w' },
   { note: 'D4', type: 'white', key: 's' },
@@ -22,10 +35,14 @@ const availableNotes = [
 
 const Piano: React.FC = () => {
   const [activeKeys, setActiveKeys] = useState<string[]>([]);
-  const [recordedNotes, setRecordedNotes] = useState<string[]>([]);
+  const [recordedNotes, setRecordedNotes] = useState<RecordedNote[]>([]);
   const [playing, setPlaying] = useState(false);
   const [recording, setRecording] = useState(false);
-
+  const [startTime, setStartTime] = useState<number | null>(null);
+  
+  // Referencia para mantener track de las teclas presionadas y sus timestamps
+  const pressedKeysRef = React.useRef<Map<string, number>>(new Map());
+  
   const synth = useMemo(() => new Tone.Synth().toDestination(), []);
 
   const playSound = useCallback((note: string) => {
@@ -33,33 +50,86 @@ const Piano: React.FC = () => {
   }, [synth]);
 
   const pressKey = useCallback((note: string) => {
+    const currentTime = Date.now();
+    
     setActiveKeys((prevKeys) => {
       if (!prevKeys.includes(note)) {
         return [...prevKeys, note];
       }
       return prevKeys;
     });
+
     if (!playing && recording) {
-      setRecordedNotes((prevNotes) => [...prevNotes, note]);
+      // Guardamos el timestamp de cuando se presionó la tecla
+      pressedKeysRef.current.set(note, currentTime);
+      
+      // Si hay notas previas, calculamos el gap desde la última nota
+      if (recordedNotes.length > 0) {
+        const lastNote = recordedNotes[recordedNotes.length - 1];
+        const gap = currentTime - (lastNote.timestamp + (lastNote.duration || 0));
+        
+        // Actualizamos la última nota con el gap
+        setRecordedNotes(prev => {
+          const updated = [...prev];
+          updated[updated.length - 1] = { ...lastNote, gap };
+          return updated;
+        });
+      }
     }
+    
     playSound(note);
-  }, [playing, recording, playSound]);
+  }, [playing, recording, recordedNotes, playSound]);
 
   const releaseKey = useCallback((note: string) => {
+    const currentTime = Date.now();
+    
     setActiveKeys((prevKeys) => prevKeys.filter((key) => key !== note));
-  }, []);
+    
+    if (!playing && recording && pressedKeysRef.current.has(note)) {
+      const pressTime = pressedKeysRef.current.get(note)!;
+      const duration = currentTime - pressTime;
+      
+      // Agregamos la nota con su duración
+      setRecordedNotes(prev => [...prev, {
+        note,
+        timestamp: pressTime - (startTime || pressTime),
+        duration,
+      }]);
+      
+      pressedKeysRef.current.delete(note);
+    }
+  }, [playing, recording, startTime]);
 
   const playRecordedNotes = useCallback(() => {
+    setPlaying(true);
     let index = 0;
-    const intervalId = setInterval(() => {
+
+    const playNextNote = () => {
       if (index < recordedNotes.length) {
-        playSound(recordedNotes[index]);
-        index++;
+        const currentNote = recordedNotes[index];
+        const delay = index === 0 ? 0 : 
+          (currentNote.timestamp - recordedNotes[index - 1].timestamp);
+
+        setTimeout(() => {
+          playSound(currentNote.note);
+          setActiveKeys(prev => [...prev, currentNote.note]);
+          
+          // Programamos cuando soltar la tecla
+          if (currentNote.duration) {
+            setTimeout(() => {
+              setActiveKeys(prev => prev.filter(key => key !== currentNote.note));
+            }, currentNote.duration);
+          }
+          
+          index++;
+          playNextNote();
+        }, delay);
       } else {
-        clearInterval(intervalId);
         setPlaying(false);
       }
-    }, 500);
+    };
+
+    playNextNote();
   }, [recordedNotes, playSound]);
 
   useEffect(() => {
@@ -69,9 +139,19 @@ const Piano: React.FC = () => {
   }, [playing, playRecordedNotes]);
 
   useEffect(() => {
+    if (recording) {
+      setStartTime(Date.now());
+      setRecordedNotes([]);
+      pressedKeysRef.current.clear();
+    } else {
+      setStartTime(null);
+    }
+  }, [recording]);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       const note = availableNotes.find((n) => n.key === event.key.toLowerCase())?.note;
-      if (note) {
+      if (note && !event.repeat) {
         pressKey(note);
       }
     };

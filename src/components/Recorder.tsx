@@ -1,15 +1,19 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
-const PLAYBACK_DELAY = 500;
 const BUTTON_STATES = {
   RECORD: 'record',
   STOP: 'stop',
   PLAY: 'play'
 } as const;
 
+interface RecordedNote {
+  note: string;
+  timestamp: number;
+}
+
 interface RecorderProps {
-  recordedNotes: string[];
-  setRecordedNotes: (notes: string[]) => void;
+  recordedNotes: RecordedNote[];
+  setRecordedNotes: (notes: RecordedNote[]) => void;
   playing: boolean;
   setPlaying: (state: boolean) => void;
   recording: boolean;
@@ -18,24 +22,15 @@ interface RecorderProps {
 }
 
 const buttonConfigs = {
-  record: {
-    label: 'Record',
-    className: 'recorder-btn record-btn'
-  },
-  stop: {
-    label: 'Stop',
-    className: 'recorder-btn stop-btn'
-  },
-  play: {
-    label: 'Play',
-    className: 'recorder-btn play-btn'
-  }
+  record: { label: 'Record', className: 'recorder-btn record-btn' },
+  stop: { label: 'Stop', className: 'recorder-btn stop-btn' },
+  play: { label: 'Play', className: 'recorder-btn play-btn' }
 };
 
-const Recorder: React.FC<RecorderProps> = ({ 
-  recordedNotes, 
-  setRecordedNotes, 
-  playing, 
+const Recorder: React.FC<RecorderProps> = ({
+  recordedNotes,
+  setRecordedNotes,
+  playing,
   setPlaying,
   recording,
   setRecording,
@@ -43,11 +38,13 @@ const Recorder: React.FC<RecorderProps> = ({
 }) => {
   const sequenceRef = useRef<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
+  const startTimeRef = useRef<number | null>(null);
 
   const startRecording = useCallback(() => {
     try {
       setRecordedNotes([]);
       setRecording(true);
+      startTimeRef.current = Date.now();
     } catch (error) {
       onError?.(error instanceof Error ? error : new Error('Recording error'));
     }
@@ -56,6 +53,7 @@ const Recorder: React.FC<RecorderProps> = ({
   const stopRecording = useCallback(() => {
     try {
       setRecording(false);
+      startTimeRef.current = null;
     } catch (error) {
       onError?.(error instanceof Error ? error : new Error('Stop error'));
     }
@@ -79,11 +77,14 @@ const Recorder: React.FC<RecorderProps> = ({
 
   useEffect(() => {
     if (!playing || sequenceRef.current === null) return;
-    
+
     if (sequenceRef.current >= recordedNotes.length) {
       cleanup();
       return;
     }
+
+    const { timestamp } = recordedNotes[sequenceRef.current];
+    const delay = sequenceRef.current === 0 ? 0 : timestamp - recordedNotes[sequenceRef.current - 1].timestamp;
 
     timeoutRef.current = setTimeout(() => {
       try {
@@ -92,7 +93,7 @@ const Recorder: React.FC<RecorderProps> = ({
         cleanup();
         onError?.(new Error('Playback error'));
       }
-    }, PLAYBACK_DELAY);
+    }, delay);
 
     return () => clearTimeout(timeoutRef.current);
   }, [playing, recordedNotes, cleanup, onError]);
@@ -115,7 +116,7 @@ const Recorder: React.FC<RecorderProps> = ({
       {renderButton('record', startRecording, recording)}
       {renderButton('stop', stopRecording, !recording)}
       {renderButton('play', playRecording, !recordedNotes.length || playing)}
-      
+
       <div className="recorder-status">
         {recording && <span>Recording...</span>}
         {playing && <span>Playing...</span>}
