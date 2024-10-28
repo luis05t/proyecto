@@ -6,6 +6,8 @@ const BUTTON_STATES = {
   PLAY: 'play'
 } as const;
 
+type ButtonState = typeof BUTTON_STATES[keyof typeof BUTTON_STATES];
+
 interface RecordedNote {
   note: string;
   timestamp: number;
@@ -21,10 +23,10 @@ interface RecorderProps {
   onError?: (error: Error) => void;
 }
 
-const buttonConfigs = {
-  record: { label: 'Record', className: 'recorder-btn record-btn' },
-  stop: { label: 'Stop', className: 'recorder-btn stop-btn' },
-  play: { label: 'Play', className: 'recorder-btn play-btn' }
+const buttonConfigs: Record<ButtonState, { label: string; className: string }> = {
+  [BUTTON_STATES.RECORD]: { label: 'Record', className: 'recorder-btn record-btn' },
+  [BUTTON_STATES.STOP]: { label: 'Stop', className: 'recorder-btn stop-btn' },
+  [BUTTON_STATES.PLAY]: { label: 'Play', className: 'recorder-btn play-btn' }
 };
 
 const Recorder: React.FC<RecorderProps> = ({
@@ -77,15 +79,12 @@ const Recorder: React.FC<RecorderProps> = ({
 
   useEffect(() => {
     if (!playing || sequenceRef.current === null) return;
-
     if (sequenceRef.current >= recordedNotes.length) {
       cleanup();
       return;
     }
-
     const { timestamp } = recordedNotes[sequenceRef.current];
     const delay = sequenceRef.current === 0 ? 0 : timestamp - recordedNotes[sequenceRef.current - 1].timestamp;
-
     timeoutRef.current = setTimeout(() => {
       try {
         sequenceRef.current! += 1;
@@ -94,11 +93,10 @@ const Recorder: React.FC<RecorderProps> = ({
         onError?.(new Error('Playback error'));
       }
     }, delay);
-
     return () => clearTimeout(timeoutRef.current);
   }, [playing, recordedNotes, cleanup, onError]);
 
-  const renderButton = (type: keyof typeof buttonConfigs, onClick: () => void, disabled: boolean) => {
+  const renderButton = (type: ButtonState, onClick: () => void, disabled: boolean) => {
     const config = buttonConfigs[type];
     return (
       <button
@@ -113,10 +111,9 @@ const Recorder: React.FC<RecorderProps> = ({
 
   return (
     <div className="recorder">
-      {renderButton('record', startRecording, recording)}
-      {renderButton('stop', stopRecording, !recording)}
-      {renderButton('play', playRecording, !recordedNotes.length || playing)}
-
+      {renderButton(BUTTON_STATES.RECORD, startRecording, recording)}
+      {renderButton(BUTTON_STATES.STOP, stopRecording, !recording)}
+      {renderButton(BUTTON_STATES.PLAY, playRecording, !recordedNotes.length || playing)}
       <div className="recorder-status">
         {recording && <span>Recording...</span>}
         {playing && <span>Playing...</span>}
