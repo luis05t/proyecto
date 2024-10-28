@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
-// Constants
+
 const PLAYBACK_DELAY = 500;
 const BUTTON_STATES = {
   RECORD: 'record',
@@ -56,7 +56,7 @@ const Recorder: React.FC<RecorderProps> = ({
   const sequenceRef = useRef<number | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  // Memoized handlers
+  
   const startRecording = useCallback(() => {
     try {
       setRecordedNotes([]);
@@ -86,7 +86,7 @@ const Recorder: React.FC<RecorderProps> = ({
     }
   }, [recordedNotes.length, setPlaying, onError]);
 
-  // Cleanup function
+
   const cleanup = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -114,7 +114,7 @@ const Recorder: React.FC<RecorderProps> = ({
       }
     }, PLAYBACK_DELAY);
 
-    // Cleanup on unmount or when dependencies change
+    
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);

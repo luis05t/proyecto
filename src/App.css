@@ -13,7 +13,7 @@
   overflow: hidden;
 }
 
-/* Efecto de brillo ambiental */
+
 .piano::before {
   content: '';
   position: absolute;
@@ -45,7 +45,7 @@
   backdrop-filter: blur(10px);
 }
 
-/* Efecto de borde brillante */
+
 .keyboard-container::after, .recorder-container::after {
   content: '';
   position: absolute;
@@ -136,7 +136,7 @@
   overflow: hidden;
 }
 
-/* Efecto de onda al hacer clic */
+
 .recorder button::after {
   content: '';
   position: absolute;
@@ -156,7 +156,7 @@
   opacity: 0;
 }
 
-/* Estado de grabación mejorado */
+
 .recorder button.recording {
   background: linear-gradient(145deg, #dc2626, #991b1b);
   animation: recording-pulse 2s infinite;
@@ -173,7 +173,7 @@
   animation: blink 1s infinite;
 }
 
-/* Visualizador de tiempo */
+
 .time-display {
   font-family: 'Roboto Mono', monospace;
   font-size: 1.2em;
@@ -182,7 +182,7 @@
   margin-top: 10px;
 }
 
-/* Animaciones */
+
 @keyframes ambient-light {
   0% {
     transform: translate(-30%, -30%) rotate(0deg);
@@ -209,38 +209,7 @@
   50% { opacity: 0.5; }
 }
 
-/* Estilos para pantallas más pequeñas con animaciones optimizadas */
-@media (max-width: 768px) {
-  .piano {
-    flex-direction: column;
-    padding: 20px 15px;
-  }
 
-  .keyboard-container, .recorder-container {
-    margin: 15px;
-    padding: 15px;
-    backdrop-filter: none; /* Mejora el rendimiento en móviles */
-  }
-
-  .keyboard {
-    padding: 15px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-  }
-
-  .recorder button {
-    padding: 10px 20px;
-    font-size: 12px;
-  }
-
-  /* Desactivar algunas animaciones en móvil para mejor rendimiento */
-  .piano::before {
-    animation: none;
-  }
-}
-
-/* Soporte para modo oscuro del sistema */
 @media (prefers-color-scheme: dark) {
   .piano {
     background: linear-gradient(145deg, #0a0a0a, #000000);
