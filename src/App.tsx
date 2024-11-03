@@ -13,8 +13,8 @@ interface Note {
 interface RecordedNote {
   note: string;
   timestamp: number;
-  duration?: number;  // Tiempo que la tecla estuvo presionada
-  gap?: number;       // Tiempo hasta la siguiente nota
+  duration?: number;  
+  gap?: number;       
 }
 
 const availableNotes: Note[] = [
@@ -40,7 +40,6 @@ const Piano: React.FC = () => {
   const [recording, setRecording] = useState(false);
   const [startTime, setStartTime] = useState<number | null>(null);
   
-  // Referencia para mantener track de las teclas presionadas y sus timestamps
   const pressedKeysRef = React.useRef<Map<string, number>>(new Map());
   
   const synth = useMemo(() => new Tone.Synth().toDestination(), []);
@@ -60,15 +59,12 @@ const Piano: React.FC = () => {
     });
 
     if (!playing && recording) {
-      // Guardamos el timestamp de cuando se presionó la tecla
       pressedKeysRef.current.set(note, currentTime);
       
-      // Si hay notas previas, calculamos el gap desde la última nota
       if (recordedNotes.length > 0) {
         const lastNote = recordedNotes[recordedNotes.length - 1];
         const gap = currentTime - (lastNote.timestamp + (lastNote.duration || 0));
         
-        // Actualizamos la última nota con el gap
         setRecordedNotes(prev => {
           const updated = [...prev];
           updated[updated.length - 1] = { ...lastNote, gap };
@@ -89,7 +85,6 @@ const Piano: React.FC = () => {
       const pressTime = pressedKeysRef.current.get(note)!;
       const duration = currentTime - pressTime;
       
-      // Agregamos la nota con su duración
       setRecordedNotes(prev => [...prev, {
         note,
         timestamp: pressTime - (startTime || pressTime),
@@ -114,7 +109,6 @@ const Piano: React.FC = () => {
           playSound(currentNote.note);
           setActiveKeys(prev => [...prev, currentNote.note]);
           
-          // Programamos cuando soltar la tecla
           if (currentNote.duration) {
             setTimeout(() => {
               setActiveKeys(prev => prev.filter(key => key !== currentNote.note));

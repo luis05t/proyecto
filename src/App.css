@@ -84,7 +84,6 @@
   z-index: 1;
 }
 
-/* Indicador de volumen */
 .volume-meter {
   position: absolute;
   bottom: -10px;
