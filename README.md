@@ -280,14 +280,14 @@ JSX es ideal porque permite escribir HTML dentro de JavaScript, facilitando la c
     key={note}  // Clave única para cada tecla, que es la nota
     role="button"  // Marca como botón para accesibilidad
     aria-pressed={activeKeys.includes(note)}  // Indica si la tecla está presionada
-    className={`key ${type} ${activeKeys.includes(note) ? 'active' : ''}`}  // Clases dinámicas para el tipo de tecla y su estado (activo o no)
+    className={`key ${type} ${activeKeys.includes(note) ? 'active' : ''}`}  // Clases dinámicas para el tipo de tecla y su estado
     onMouseDown={() => pressKey(note)}  // Al presionar la tecla, se pasa la nota al manejarla
     onMouseUp={() => releaseKey(note)}  // Al soltar la tecla, se pasa la nota al manejarla
     onMouseLeave={() => releaseKey(note)}  // Si se deja de presionar fuera de la tecla, se pasa la nota al manejarla
     tabIndex={0}  // Permite que la tecla sea enfocada con el teclado
     aria-label={`Key ${note}`}  // Etiqueta accesible para la tecla
   >
-    <span className="note-name">{note}</span>  // Muestra el nombre de la nota que el usuario toca (esto es lo que maneja al usuario)
+    <span className="note-name">{note}</span>  // Muestra el nombre de la nota que el usuario toca.
   </div>
 ))}
 ```
@@ -340,11 +340,11 @@ const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, releaseKey, active
           aria-pressed={activeKeys.includes(note)} // Utiliza la prop activeKeys
           className={`key ${type} ${activeKeys.includes(note) ? 'active' : ''}`} // Utiliza la prop activeKeys
           onMouseDown={() => {
-            pressKey(note); // Utiliza la prop pressKey
+            pressKey(note); 
             playSound(note); // Utiliza la prop playSound
           }}
           onMouseUp={() => releaseKey(note)} // Utiliza la prop releaseKey
-          onMouseLeave={() => releaseKey(note)} // Utiliza la prop releaseKey
+          onMouseLeave={() => releaseKey(note)
           tabIndex={0}
           aria-label={`Key ${note}`}
         >
