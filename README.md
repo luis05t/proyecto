@@ -307,6 +307,28 @@ Mejora la accesibilidad con atributos como aria-pressed y tabIndex.
 Es modular y escalable, lo que facilita agregar más notas o modificar el comportamiento sin complicaciones.
 
 - **Configurar componentes con props**: Pasar la información de las notas y los controles de grabación/reproducción como props entre componentes.
+### Key
+```typescript 
+const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive, keyboardKey, playSound }) => {
+  const handleClick = useCallback(() => {
+    pressKey(note);
+    playSound(note);
+  }, [note, pressKey, playSound]);
+
+  return (
+    <div
+      role="button"
+      aria-pressed={isActive}
+      className={`key ${note.includes('#') ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
+      onClick={handleClick}
+    >
+      <span className="note-name">{note}</span>
+      {keyboardKey && <span className="keyboard-key">{keyboardKey}</span>}
+    </div>
+  );
+};
+```
+### Keyboard
 ```typescript 
 const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, releaseKey, activeKeys, playSound }) => {
   return (
@@ -333,12 +355,46 @@ const Keyboard: React.FC<KeyboardProps> = ({ notes, pressKey, releaseKey, active
   );
 };
 ```
+### Recorder
+```typescript
+const Recorder: React.FC<RecorderProps> = ({
+  recordedNotes,
+  setRecordedNotes,
+  playing,
+  setPlaying,
+  recording,
+  setRecording,
+  onError
+}) => {
+```
 ## ¿Qué hace este fragmento de código?
-Este código define el componente Keyboard en React, que representa un teclado virtual. Recibe props como notes (notas musicales), pressKey (función para presionar teclas), releaseKey (función para soltar teclas), activeKeys (teclas activas) y playSound (reproduce sonido). Renderiza teclas interactivas que reaccionan a los eventos de presionar y soltar, y muestra el estado de cada tecla.
+
+Recorder: Recibe las propiedades (props) recordedNotes, setRecordedNotes, playing, setPlaying, recording, setRecording, y onError, y maneja la grabación y reproducción de las notas.
+
+Keyboard: Recibe las propiedades (props) notes, pressKey, releaseKey, activeKeys, y playSound, y renderiza las teclas del piano. Permite presionar y soltar las teclas con el ratón o el teclado.
+
+Key: Recibe las propiedades (props) note, pressKey, releaseKey, isActive, keyboardKey, y playSound. Representa una tecla individual y maneja las interacciones con el ratón y el teclado.
 
 ## ¿Cómo cumple con el requisito de la habilidad?
-Cumple con el requisito de pasar información entre componentes usando props, lo que permite manejar de manera flexible y modular la interacción con el teclado virtual, manteniendo el estado y la lógica fuera del componente.
+Interactividad: Con las propiedades pressKey, releaseKey y playSound, los componentes permiten la interacción del usuario con el piano usando ratón y teclado.
 
-## ¿Por qué es la mejor forma de implementarlo?
-Usar props es la mejor práctica en React porque asegura modularidad, reutilización y control del estado de manera eficiente. Además, mejora la accesibilidad y permite gestionar la lógica de manera centralizada, facilitando el mantenimiento y la escalabilidad del código.
+Accesibilidad: Las propiedades como aria-pressed y tabIndex garantizan que las teclas sean accesibles.
 
+Grabación: Recorder usa las propiedades recordedNotes, setRecordedNotes, playing, y setPlaying para manejar la grabación y reproducción.
+
+### ¿Por qué es la mejor forma de implementarlo?
+Eficiencia: useCallback y useEffect optimizan el rendimiento al manejar eventos y actualizaciones de manera eficiente.
+
+Accesibilidad: Las propiedades aseguran que el piano sea accesible para usuarios con diferentes necesidades.
+
+Reactividad: Los props permiten que el estado de la aplicación se maneje de manera reactiva, asegurando interacciones fluidas.
+#
+- **Renderizar condicionalmente**: Mostrar visualmente cuando una tecla es presionada o está siendo reproducida en la secuencia.
+- **Renderizar múltiples componentes a la vez**: Renderizar todas las teclas del teclado utilizando `map`.
+- **Mantener componentes puros**: Asegurar que los componentes `Tecla` no muten el estado directamente, sino que reciban información a través de props.
+- **Entender la UI como árboles**: Organizar las teclas, la grabación y la reproducción de manera jerárquica.
+- **Controlar eventos del usuario**: Capturar eventos para tocar una tecla, grabar una secuencia y reproducir las notas.
+- **Gestionar el estado**: Controlar el estado de las notas grabadas, las teclas presionadas y la reproducción de la secuencia.
+- **Levantar el estado**: Compartir el estado entre los componentes del teclado y la grabadora para que las notas se graben y reproduzcan correctamente.
+- **Sincronización de efectos**: Usar `useEffect` para manejar la reproducción de notas en una secuencia grabada.
+- **Acceder a valores del DOM**: Usar `useRef` para asegurarse de que el teclado responda correctamente a la interacción del usuario.
