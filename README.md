@@ -1,50 +1,32 @@
-# React + TypeScript + Vite
+# Simulador de Notas Musicales
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+-**Descripción**: Crea una aplicación que simula un piano virtual. Los usuarios pueden hacer clic en teclas para reproducir notas musicales y ver las notas que han tocado. También pueden grabar secuencias de notas y reproducirlas.
+- **Habilidades**:
 
-Currently, two official plugins are available:
+    - **Escribir tu primer componente de React**: Crear un componente `Tecla` que represente cada tecla del piano.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+    - **Crear archivos con múltiples componentes**: Crear componentes para el teclado, el área de grabación y la reproducción de las notas.
 
-## Expanding the ESLint configuration
+    - **Añadir marcado a JavaScript con JSX**: Usar JSX para renderizar el teclado y la interfaz de grabación/reproducción.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+    - **Añadir llaves con JSX**: Utilizar llaves para manejar las notas que el usuario toca.
 
-- Configure the top-level `parserOptions` property like this:
+    - **Configurar componentes con props**: Pasar la información de las notas y los controles de grabación/reproducción como props entre componentes.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+    - **Renderizar condicionalmente**: Mostrar visualmente cuando una tecla es presionada o está siendo reproducida en la secuencia.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+    - **Renderizar múltiples componentes a la vez**: Renderizar todas las teclas del teclado utilizando `map`.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+    - **Mantener componentes puros**: Asegurar que los componentes `Tecla` no muten el estado directamente, sino que reciban información a través de props.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+    - **Entender la UI como árboles**: Organizar las teclas, la grabación y la reproducción de manera jerárquica.
+
+    - **Controlar eventos del usuario**: Capturar eventos para tocar una tecla, grabar una secuencia y reproducir las notas.
+
+    - **Gestionar el estado**: Controlar el estado de las notas grabadas, las teclas presionadas y la reproducción de la secuencia.
+
+    - **Levantar el estado**: Compartir el estado entre los componentes del teclado y la grabadora para que las notas se graben y reproduzcan correctamente.
+
+    - **Sincronización de efectos**: Usar `useEffect` para manejar la reproducción de notas en una secuencia grabada.
+    
+    - **Acceder a valores del DOM**: Usar `useRef` para asegurarse de que el teclado responda correctamente a la interacción del usuario.
