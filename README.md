@@ -398,10 +398,11 @@ siendo reproducida en la secuencia.
 * Descripción: Este fragmento de código activa visualmente una tecla cuando está siendo presionada o durante la reproducción. 
 
 #### Código
+- **Componente: key**
 ```typescript
   <div
   role="button"
-  // Condicionalmente establece si la tecla está activa, aplicando la clase "active" cuando es el caso
+  // Condicionalmente establece si la tecla está activa, aplicando la clase "active" cuando es el caso 
   aria-pressed={isActive}
   className={`key ${note.includes('#') ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
   // Llama a handleClick al hacer clic en la tecla para activar su funcionalidad
@@ -428,6 +429,7 @@ Renderizar todas las teclas del teclado utilizando `map`.
 * Descripción: Renderiza todas las teclas del teclado iterando sobre el arreglo notes.
 
 #### Código:
+- **Componente: keyboard**
 ``` typescript
 {notes.map(({ note, type }) => (
   // Cada tecla recibe una clave única y clases dinámicas según el tipo de nota
@@ -454,6 +456,7 @@ Asegurar que los componentes `Tecla` no muten el estado directamente, sino que r
 * Descripción: Mantiene el componente `Key` puro, evitando modificaciones directas al estado.
 
 #### Código:
+- **Componente: key**
 ```typescript
 const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive }) => (
   <div
@@ -484,6 +487,7 @@ Organizar las teclas, la grabación y la reproducción de manera jerárquica.
 * Descripción: Estructura jerárquica de componentes con Piano, Keyboard, y Recorder.
 
 #### Código:
+- **Componente: App.tsx**
 ```typescript
 <div className="piano">
   /* El componente Keyboard maneja las notas disponibles y eventos de presionar/soltar teclas */
@@ -509,6 +513,7 @@ Capturar eventos para tocar una tecla, grabar una secuencia y reproducir las not
 * Descripción: Gestiona eventos keydown y keyup para detectar notas tocadas en el teclado físico.
 
 #### Código:
+- **Componente: key**
 ```typescript
 useEffect(() => {
   // Agrega eventos al objeto window para detectar teclas presionadas y soltadas
