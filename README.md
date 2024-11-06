@@ -388,12 +388,134 @@ Eficiencia: useCallback y useEffect optimizan el rendimiento al manejar eventos 
 Accesibilidad: Las propiedades aseguran que el piano sea accesible para usuarios con diferentes necesidades.
 
 Reactividad: Los props permiten que el estado de la aplicación se maneje de manera reactiva, asegurando interacciones fluidas.
+
+
 # Nathaly
-- **Renderizar condicionalmente**: Mostrar visualmente cuando una tecla es presionada o está siendo reproducida en la secuencia.
-- **Renderizar múltiples componentes a la vez**: Renderizar todas las teclas del teclado utilizando `map`.
-- **Mantener componentes puros**: Asegurar que los componentes `Tecla` no muten el estado directamente, sino que reciban información a través de props.
-- **Entender la UI como árboles**: Organizar las teclas, la grabación y la reproducción de manera jerárquica.
-- **Controlar eventos del usuario**: Capturar eventos para tocar una tecla, grabar una secuencia y reproducir las notas.
+## **6. Renderizar Condicionalmente**
+Mostrar visualmente cuando una tecla es presionada o está 
+siendo reproducida en la secuencia.
+
+* Descripción: Este fragmento de código activa visualmente una tecla cuando está siendo presionada o durante la reproducción. 
+
+#### Código
+```typescript
+  <div
+  role="button"
+  aria-pressed={isActive}
+  className={`key ${note.includes('#') ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
+  onClick={handleClick}
+>
+  <span className="note-name" aria-label={`Note ${note}`}>{note}</span>
+</div>
+```
+## Explicación:
+
+  ### ¿Qué hace este fragmento de código? 
+  Este código muestra visualmente una tecla activa al agregar la clase active cuando `isActive` es verdadero, permitiendo que la tecla se destaque cuando está en uso.
+    
+  ### ¿Cómo cumple con el requisito de la habilidad? 
+  Cumple al implementar clases condicionales según el estado `isActive`, mostrando si la tecla está presionada o en reproducción.
+    
+  ### ¿Por qué es la mejor forma de implementarlo? 
+  Usar clases condicionales mantiene el componente `Key` limpio y modular, lo que permite una fácil adaptación si se desea cambiar el estilo sin alterar la lógica interna.
+
+## **7. Renderizar múltiples componentes a la vez**:  
+Renderizar todas las teclas del teclado utilizando `map`.
+* Descripción: Renderiza todas las teclas del teclado iterando sobre el arreglo notes.
+
+#### Código:
+``` typescript
+{notes.map(({ note, type }) => (
+  <div key={note} className={`key ${type}`} aria-label={`Key ${note}`}>
+    <span className="note-name">{note}</span>
+  </div>
+))}
+```
+## Explicación:
+
+### ¿Qué hace este fragmento de código? 
+  Este código usa el método map para iterar sobre notes y crear una tecla `(div)` por cada nota musical.
+
+### ¿Cómo cumple con el requisito de la habilidad? 
+    Genera múltiples componentes div al recorrer el arreglo de notas, permitiendo una representación del teclado completa.
+
+### ¿Por qué es la mejor forma de implementarlo? 
+  La utilización de `map` es eficiente y escalable, simplificando la creación dinámica de elementos y reduciendo código repetitivo.
+
+## **8. Mantener componentes puros**: 
+Asegurar que los componentes `Tecla` no muten el estado directamente, sino que reciban información a través de props.
+* Descripción: Mantiene el componente `Key` puro, evitando modificaciones directas al estado.
+
+#### Código:
+```typescript
+const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive }) => (
+  <div onMouseDown={() => pressKey(note)} onMouseUp={() => releaseKey(note)}>
+    {note}
+  </div>
+);
+```
+## Explicación:
+
+  ### ¿Qué hace este fragmento de código?
+  Define el componente `Key`para que reciba funciones y propiedades como props, asegurando que no modifique el estado global directamente.
+  
+  ### ¿Cómo cumple con el requisito de la habilidad? 
+  Mantiene al componente puro, delegando la gestión del estado a las funciones `pressKey` y `releaseKey`.
+    
+  ### ¿Por qué es la mejor forma de implementarlo?
+  Mantener la pureza en los componentes ayuda a prevenir efectos secundarios y mejora la mantenibilidad, ya que el componente solo responde a las entradas dadas sin depender de estados externos.
+
+## **9. Entender la UI como árboles**: 
+Organizar las teclas, la grabación y la reproducción de manera jerárquica.
+
+* Descripción: Estructura jerárquica de componentes con Piano, Keyboard, y Recorder.
+
+#### Código:
+```typescript
+<div className="piano">
+  <Keyboard notes={availableNotes} pressKey={pressKey} releaseKey={releaseKey} />
+  <Recorder recordedNotes={recordedNotes} />
+</div>
+```
+## Explicación:
+
+  ### ¿Qué hace este fragmento de código? 
+  Organiza el componente Piano con sus componentes hijos `Keyboard` y `Recorder`, estructurando la interfaz de manera lógica.
+    
+  ### ¿Cómo cumple con el requisito de la habilidad?
+  Cada componente tiene su rol específico, lo que mejora la separación de responsabilidades.
+    
+  ### ¿Por qué es la mejor forma de implementarlo?
+  Una estructura de árbol mejora la claridad del flujo de datos y la mantenibilidad, permitiendo un desarrollo más organizado y facilitando cambios en la interfaz.
+
+## **10. Controlar eventos del usuario**: 
+Capturar eventos para tocar una tecla, grabar una secuencia y reproducir las notas.
+
+* Descripción: Gestiona eventos keydown y keyup para detectar notas tocadas en el teclado físico.
+
+#### Código:
+```typescript
+useEffect(() => {
+  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener('keyup', handleKeyUp);
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+    window.removeEventListener('keyup', handleKeyUp);
+  };
+}, [handleKeyDown, handleKeyUp]);
+```
+
+## Explicación:
+
+  ### ¿Qué hace este fragmento de código? 
+  Captura los eventos de teclado físico y los asigna a funciones de manejo para tocar y soltar notas.
+  
+  ### ¿Cómo cumple con el requisito de la habilidad? 
+  Detecta las teclas presionadas en el teclado físico, permitiendo que el usuario interactúe con el piano virtual.
+    
+  ### ¿Por qué es la mejor forma de implementarlo?
+   El uso de useEffect asegura que los eventos se registren y desregistren correctamente, evitando la acumulación de listeners y optimizando el rendimiento.
+
 # Elkin
 - **Gestionar el estado**: Controlar el estado de las notas grabadas, las teclas presionadas y la reproducción de la secuencia.
 - **Levantar el estado**: Compartir el estado entre los componentes del teclado y la grabadora para que las notas se graben y reproduzcan correctamente.
