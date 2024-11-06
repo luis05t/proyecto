@@ -401,12 +401,16 @@ siendo reproducida en la secuencia.
 ```typescript
   <div
   role="button"
+  // Condicionalmente establece si la tecla está activa, aplicando la clase "active" cuando es el caso
   aria-pressed={isActive}
   className={`key ${note.includes('#') ? 'black' : 'white'} ${isActive ? 'active' : ''}`}
+  // Llama a handleClick al hacer clic en la tecla para activar su funcionalidad
   onClick={handleClick}
 >
+  /* Muestra el nombre de la nota en la tecla */
   <span className="note-name" aria-label={`Note ${note}`}>{note}</span>
 </div>
+
 ```
 ## Explicación:
 
@@ -426,10 +430,13 @@ Renderizar todas las teclas del teclado utilizando `map`.
 #### Código:
 ``` typescript
 {notes.map(({ note, type }) => (
+  // Cada tecla recibe una clave única y clases dinámicas según el tipo de nota
   <div key={note} className={`key ${type}`} aria-label={`Key ${note}`}>
+    /* Muestra el nombre de la nota musical en cada tecla */
     <span className="note-name">{note}</span>
   </div>
 ))}
+
 ```
 ## Explicación:
 
@@ -437,7 +444,7 @@ Renderizar todas las teclas del teclado utilizando `map`.
   Este código usa el método map para iterar sobre notes y crear una tecla `(div)` por cada nota musical.
 
 ### ¿Cómo cumple con el requisito de la habilidad? 
-    Genera múltiples componentes div al recorrer el arreglo de notas, permitiendo una representación del teclado completa.
+  Genera múltiples componentes div al recorrer el arreglo de notas, permitiendo una representación del teclado completa.
 
 ### ¿Por qué es la mejor forma de implementarlo? 
   La utilización de `map` es eficiente y escalable, simplificando la creación dinámica de elementos y reduciendo código repetitivo.
@@ -449,7 +456,13 @@ Asegurar que los componentes `Tecla` no muten el estado directamente, sino que r
 #### Código:
 ```typescript
 const Key: React.FC<KeyProps> = ({ note, pressKey, releaseKey, isActive }) => (
-  <div onMouseDown={() => pressKey(note)} onMouseUp={() => releaseKey(note)}>
+  <div
+    // Detecta el evento de mouse para presionar una tecla y llama a `pressKey`
+    onMouseDown={() => pressKey(note)}
+    // Detecta el evento de mouse para soltar una tecla y llama a `releaseKey`
+    onMouseUp={() => releaseKey(note)}
+  >
+    /* Muestra el nombre de la nota musical dentro del componente Key */
     {note}
   </div>
 );
@@ -473,7 +486,9 @@ Organizar las teclas, la grabación y la reproducción de manera jerárquica.
 #### Código:
 ```typescript
 <div className="piano">
+  /* El componente Keyboard maneja las notas disponibles y eventos de presionar/soltar teclas */
   <Keyboard notes={availableNotes} pressKey={pressKey} releaseKey={releaseKey} />
+  /* El componente Recorder controla las notas grabadas y su reproducción */
   <Recorder recordedNotes={recordedNotes} />
 </div>
 ```
@@ -496,8 +511,11 @@ Capturar eventos para tocar una tecla, grabar una secuencia y reproducir las not
 #### Código:
 ```typescript
 useEffect(() => {
+  // Agrega eventos al objeto window para detectar teclas presionadas y soltadas
   window.addEventListener('keydown', handleKeyDown);
   window.addEventListener('keyup', handleKeyUp);
+
+  // Limpia los listeners al desmontar el componente para evitar fugas de memoria
   return () => {
     window.removeEventListener('keydown', handleKeyDown);
     window.removeEventListener('keyup', handleKeyUp);
