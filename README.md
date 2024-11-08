@@ -576,7 +576,7 @@ const startRecording = useCallback(() => {
   
   
 
-## ¿Qué hace este fragmento de código?**
+## ¿Qué hace este fragmento de código?
 
 Esta parte del  código implementa la función `startRecording` que se encarga de inicializar la grabación de notas. Específicamente esta realiza una 
 
@@ -703,7 +703,7 @@ useEffect(() => {
   
   
 
-## ¿Qué hace este fragmento de código?**
+## ¿Qué hace este fragmento de código?
 
 En esta parte del  código se maneja todo lo que es la reproducción de las notas grabadas a través de dos partes que son principales:
 
@@ -761,7 +761,7 @@ el código cumple el requisito de la habilidad por que se le da un:
 
   
 
-## ¿Por qué es la mejor forma de implementarlo?**
+## ¿Por qué es la mejor forma de implementarlo?
   
 
 1. **Precisión temporal**:
@@ -869,7 +869,7 @@ Esta parte maneja el control del estado de grabación a través de dos funciones
 
   
 
-## ¿Cómo cumple con el requisito de la habilidad?**
+## ¿Cómo cumple con el requisito de la habilidad?
 
   
 1. **Control de estados**:
